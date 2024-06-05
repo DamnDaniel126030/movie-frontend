@@ -26,11 +26,13 @@ function createMovieTableHead(): HTMLTableSectionElement {
   const thTitle = document.createElement("th");
   const thCategory = document.createElement("th");
   const thDuration = document.createElement("th");
+  const tdMethods = document.createElement("td");
   thId.textContent = "#";
   thTitle.textContent = "Title";
   thCategory.textContent = "Genre";
   thDuration.textContent = "Duration (minute)";
-  tr.append(thId, thTitle, thCategory, thDuration);
+  tdMethods.textContent = "";
+  tr.append(thId, thTitle, thCategory, thDuration, tdMethods);
   thead.appendChild(tr);
   return thead;
 };
@@ -44,11 +46,16 @@ function createMovieTableBody(movies: Movie[]): HTMLTableSectionElement {
     const tdTitle = document.createElement("td");
     const tdCategory = document.createElement("td");
     const tdDuration = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("submit", () => {
+      deleteMovie(movie.id!)
+    })
     tdId.textContent = movie.id!.toString();
     tdTitle.textContent = movie.title;
     tdCategory.textContent = movie.category;
     tdDuration.textContent = movie.duration.toString();
-    tr.append(tdId, tdTitle, tdCategory, tdDuration);
+    tr.append(tdId, tdTitle, tdCategory, tdDuration, deleteButton);
     tbody.appendChild(tr);
   }
   
@@ -73,7 +80,7 @@ movieForm.addEventListener("submit", event => {
   };
 
   createMovie(movie);
-})
+});
 
 async function createMovie(movie : Movie){
   try {
@@ -96,8 +103,26 @@ async function createMovie(movie : Movie){
   } 
   catch (error) {
     alert(error)
-  }
+  };
   
+};
+
+async function deleteMovie(id : number) : Promise<void> {
+  try {
+    const response = await(fetch(`${backendUrl}/movies/${id}`, {
+      method: "DELETE"
+    }))
+    if (response.ok){
+      listMovies();
+    }
+    else{
+      const responseText = await response.text();
+      alert(responseText);
+    }
+  }
+  catch (error) {
+    alert(error);
+  };
 };
 
 function clearForm() : void{
@@ -107,6 +132,6 @@ function clearForm() : void{
   titleInput.value = "";
   categoryInput.value = "";
   durationInput.value = "";
-}
+};
 
 
