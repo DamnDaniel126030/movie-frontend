@@ -48,7 +48,7 @@ function createMovieTableBody(movies: Movie[]): HTMLTableSectionElement {
     const tdDuration = document.createElement("td");
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("submit", () => {
+    deleteButton.addEventListener("click", () => {
       deleteMovie(movie.id!)
     })
     tdId.textContent = movie.id!.toString();
