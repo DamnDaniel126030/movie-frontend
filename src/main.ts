@@ -12,6 +12,7 @@ function renderMovies(movies : Movie[]): void{
   const app = document.getElementById("app") as HTMLDivElement;
   app.textContent = "";
   const movieTable = document.createElement("table");
+  movieTable.classList.add("table", "table-striped", "mb-3");
   const movieThead = createMovieTableHead();
   const movieTbody = createMovieTableBody(movies);
   movieTable.appendChild(movieThead)
@@ -48,6 +49,7 @@ function createMovieTableBody(movies: Movie[]): HTMLTableSectionElement {
     const tdDuration = document.createElement("td");
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
+    deleteButton.classList.add("btn", "btn-danger", "mb-3");
     deleteButton.addEventListener("click", () => {
       deleteMovie(movie.id!)
     })
